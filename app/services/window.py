@@ -46,3 +46,19 @@ def unlink_service_from_window(db_session: Session, window_id: str, service_id: 
                 db_session.add(db_window)
                 db_session.commit()
         return db_window
+
+def link_operator_to_window(db_session: Session, window_id: str, operator_id: str):
+        db_window = get_window(db_session, window_id)
+        if db_window:
+                db_window.current_operator_id = operator_id
+                db_session.add(db_window)
+                db_session.commit()
+        return db_window
+
+def unlink_operator_from_window(db_session: Session, window_id: str):
+        db_window = get_window(db_session, window_id)
+        if db_window:
+                db_window.current_operator_id = None
+                db_session.add(db_window)
+                db_session.commit()
+        return db_window

@@ -6,9 +6,9 @@ from app.models.base  import Base
 from app.db.session import engine
 from app.core.config import conf_settings
 
-Base.metadata.create_all(bind=engine)
 
 def get_application() -> FastAPI:
+    Base.metadata.create_all(bind=engine)
     app = FastAPI()
     
     app.add_middleware(

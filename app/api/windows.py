@@ -66,3 +66,19 @@ def unlink_service_from_window(id: UUID, service_id: UUID, db_session: Session =
         raise HTTPException(status_code=404, detail="Окно не найдено")
     
     return window_service.unlink_service_from_window(db_session, id, service_id)
+
+@router.post("/{id}/operator/link/{operator_id}")
+def link_operator_to_window(id: UUID, operator_id: UUID, db_session: Session = Depends(get_db)):
+    window_found = window_service.get_window(db_session, id)
+    if not window_found:
+        raise HTTPException(status_code=404, detail="Окно не найдено")
+    
+    return window_service.link_operator_to_window(db_session, id, operator_id)
+
+@router.post("/{id}/operator/unlink")
+def unlink_operator_from_window(id: UUID, db_session: Session = Depends(get_db)):
+    window_found = window_service.get_window(db_session, id)
+    if not window_found:
+        raise HTTPException(status_code=404, detail="Окно не найдено")
+    
+    return window_service.link_operator_to_window(db_session, id)
