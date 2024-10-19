@@ -1,0 +1,51 @@
+networks:
+  traefik-net:
+    external: true
+  internal:
+
+services:
+  mzhn-windows-app:
+    container_name: mzhn-windows-app
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - PG_HOST=windows-pg
+    build:
+      context: .
+      args:
+        - APP_PORT=${APP_PORT}
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      - windows-pg
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.windows.rule=Host(`${APP_HOST}`) && PathPrefix(`/windows`)"
+      - "traefik.http.routers.windows.entrypoints=websecure"
+      - "traefik.http.routers.windows.tls.certresolver=myresolver"
+      - "traefik.http.routers.windows.middlewares=corsheaders@file,strip-auth-prefix@file"
+    networks:
+      - traefik-net
+      - internal
+
+
+  windows-pg:
+    image: postgres:14.13-alpine3.20
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${PG_NAME}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+    volumes:
+      - pg-windows-data:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    networks:
+      - internal
+
+volumes:
+  pg-windows-data:
+
