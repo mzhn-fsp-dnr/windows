@@ -10,4 +10,6 @@ ARG APP_PORT
 
 EXPOSE $APP_PORT
 
-CMD uvicorn app.main:app --root-path "/windows" --host 0.0.0.0 --port $APP_PORT
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.12.1/wait wait
+CMD chmod +x ./wait && ./wait \
+    chmod +x ./entrypoint.sh && ./entrypoint.sh $APP_PORT

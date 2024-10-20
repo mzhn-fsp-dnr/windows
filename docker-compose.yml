@@ -10,7 +10,8 @@ services:
     env_file:
       - .env
     environment:
-      - PG_HOST=windows-pg
+      WAIT_HOSTS: windows-pg:5432
+      PG_HOST: windows-pg
     build:
       context: .
       args:
@@ -26,9 +27,8 @@ services:
       - "traefik.http.routers.windows.tls.certresolver=myresolver"
       - "traefik.http.routers.windows.middlewares=corsheaders@file,strip-auth-prefix@file"
     networks:
-      - traefik-net
+      # - traefik-net
       - internal
-
 
   windows-pg:
     image: postgres:14.13-alpine3.20
@@ -48,4 +48,3 @@ services:
 
 volumes:
   pg-windows-data:
-
