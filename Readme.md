@@ -7,7 +7,7 @@
 
 1. Склонируйте репозиторий
 
-```$ git clone https://github.com/mzhn-fsp-dnr/offices.git```
+```$ git clone https://github.com/mzhn-fsp-dnr/windows.git```
 
 2. Настройте приложение путем редактирования .env файла. Пример расположен в .example.env
 
